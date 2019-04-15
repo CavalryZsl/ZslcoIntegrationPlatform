@@ -1,7 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
+    <!--SDK版本-->
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <!--S宿主模型：InProcess运行于IIS的工作进程中W3wp.exe;outofprocess是反向代理的模式 前者性能好一些-->
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
