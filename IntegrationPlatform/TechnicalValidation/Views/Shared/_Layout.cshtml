@@ -1,0 +1,17 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div>
+        @RenderBody()
+    </div>
+    <div>
+        <!--其他视图需要配置这个节点才可以渲染  false不强制  详见info视图-->
+        @RenderSection("bottom", false);
+    </div>
+</body>
+</html>

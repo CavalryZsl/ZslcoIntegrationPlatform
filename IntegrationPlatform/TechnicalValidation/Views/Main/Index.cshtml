@@ -1,0 +1,19 @@
+﻿
+@model IEnumerable<Student> 
+@{
+    ViewBag.Title = "学生信息";
+
+}
+
+
+    <h1>学生信息</h1>
+    <ul>
+        @foreach (var item in Model)
+        {
+
+        <li>@item.Id-@item.FirstName·@item.LastName</li>
+        <hr />
+
+        }
+    </ul>
+

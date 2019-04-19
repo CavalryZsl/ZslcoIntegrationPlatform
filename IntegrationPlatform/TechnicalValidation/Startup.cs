@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using TechnicalValidation.Data;
 using TechnicalValidation.IServices;
+using TechnicalValidation.Model;
 using TechnicalValidation.Services;
 
 namespace TechnicalValidation
@@ -18,6 +21,11 @@ namespace TechnicalValidation
     /// </summary>
     public class Startup
     {
+        private readonly IConfiguration _configuration; //此服务在program类的bulider方法中已经注册了  这里可以使用了
+        public Startup(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         /// <summary>
@@ -28,10 +36,18 @@ namespace TechnicalValidation
         {
             //注册自定义和内置的
             services.AddMvc();
-            //services.AddMvcCore();
+            services.AddDbContext<DBContext>(options => {
+                //options.UseSqlServer(_configuration["ConnectionStrings:Default"].ToString());
+                options.UseSqlServer(_configuration.GetConnectionString("Default"));
+            });
             services.AddSingleton<IPrintService, PrintService>(); //单例模式
-           // services.AddTransient<IPrintService, PrintService>();//每次有代码请求 都会重新创建实例
-            //services.AddScoped<IPrintService, PrintService>();//每次web请求期间 (多次请求该实例) 还是使用一个实例
+                                                                  // services.AddTransient<IPrintService, PrintService>();//每次有代码请求 都会重新创建实例
+                                                                  //services.AddScoped<IPrintService, PrintService>();//每次web请求期间 (多次请求该实例) 创建一个实例
+
+
+            services.AddSingleton<IRepository<Student>, InMemoryRepository>();
+
+            services.AddScoped<IRepository<Student>, EfCoreRepositoryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,7 +61,6 @@ namespace TechnicalValidation
         /// 那么就会传进来实现了这些接口的对象/服务,即注入进来了</param>
         public void Configure(IApplicationBuilder app, 
             IHostingEnvironment env,
-            IConfiguration configuration,
             IPrintService PrintService, //使用自定义的服务 在ConfigureServices方法中进行注册
             ILogger<Startup> logger) //使用内置日志的服务 
         {
@@ -92,7 +107,7 @@ namespace TechnicalValidation
             app.Run(async (context) =>
             {
                 //await context.Response.WriteAsync("Hello World!");
-                //await context.Response.WriteAsync(configuration["welcome"]); //从appsetting.json中获取
+                //await context.Response.WriteAsync(_configuration["welcome"]); //从appsetting.json中获取
                 await context.Response.WriteAsync(PrintService.GetMessge());
                
             });

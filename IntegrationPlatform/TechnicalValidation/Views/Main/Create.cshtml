@@ -1,0 +1,31 @@
+﻿@model StudentInPutViewModel
+
+
+    <h1>添加信息</h1>
+    <form method="post">
+        @*<input type="text" name="FirstName" value=""/>*@
+
+        <div>
+            <label asp-for="FirstName"></label>
+            <input asp-for="FirstName" />
+            <span asp-validation-for="FirstName"></span> <!--显示错误信息-->
+        </div>
+        <div>
+            <label asp-for="LastName"></label>
+            <input asp-for="LastName" />
+            <span asp-validation-for="LastName"></span>
+        </div>
+        <div>
+            <label asp-for="Birthday"></label>
+            <input asp-for="Birthday" type="date" />
+            <span asp-validation-for="Birthday"></span>
+        </div>
+        <div>
+            <label asp-for="gender"></label>
+            <select asp-for="gender" asp-items="Html.GetEnumSelectList<Gender>()"></select>
+            <span asp-validation-for="gender"></span>
+        </div>
+        <button type="submit" name="Save">保存</button>
+        <div asp-validation-summary="All"></div>
+    </form>
+
