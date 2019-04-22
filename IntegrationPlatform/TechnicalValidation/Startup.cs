@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using TechnicalValidation.Data;
 using TechnicalValidation.IServices;
@@ -92,7 +94,13 @@ namespace TechnicalValidation
 
             #region 静态文件
             //app.UseDefaultFiles();//先改变文件的请求路径
-            app.UseStaticFiles();//然后返回静态文件
+            app.UseStaticFiles();//然后返回静态文件  wwwroot 目录
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                RequestPath = "/node_modules",
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "node_modules"))
+            }); //使用其他目录处理静态文件
 
             //app.UseFileServer();//虽然包含上面两个中间件的功能,但是还包含其他功能:目录浏览等
             #endregion

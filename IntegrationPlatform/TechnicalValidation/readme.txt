@@ -4,7 +4,7 @@ Controller
 Razor
 Model Validation
 前端
-Entity Framework
+Entity Framework core
 授权和身份验证 asp.net core identity
 
 安全
@@ -25,3 +25,6 @@ CI/CD
 路由:
 	约定路由
 	特性标签路由
+
+	VIEW partial view
+	ViewComponents 可复用  独立的  不依赖父级的数据  相当于迷你的MVC

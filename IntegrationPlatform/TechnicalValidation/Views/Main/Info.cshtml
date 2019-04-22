@@ -1,24 +1,35 @@
 ﻿
 @model MainInfoViewModel
 
-    <h1>学生信息</h1>
-    <ul>
-        @foreach (var item in Model.students)
-        {
+<h1>学生信息</h1>
+@{
+//Html.Partial("_StudentPartial", Model);<!--容易造成应用程序死锁 替换成异步的或者Tags-->
+// await Html.PartialAsync("_StudentPartial", Model)
+    <partial name="_StudentPartial" for="@Model" />
+}
 
-            <li>
-                编号：@item.Id  姓名：@item.Name  年龄：@item.Age  性别：@item.gender
-                @*<a href="Details/@item.Id">明细</a>*@ <!--原始的写法-->
-                @*@Html.ActionLink("明细", "Details", new { id = item.Id });*@ <!--HtmlHelper的写法-->
-                <!--_ViewImports 使用Tag Helper  在这个视图中 初始化视图，提供一堆指令 告诉razor引擎怎么渲染视图,视图有哪些功能-->
-                <a asp-action="Details" asp-route-id="@item.Id">明细</a>
-            </li>
+@*<ul>  此处修改成Partial 部分视图
+    @foreach (var item in Model.students)
+    {
+
+        <li>
+            编号：@item.Id  姓名：@item.Name  年龄：@item.Age  性别：@item.gender
+            @*<a href="Details/@item.Id">明细</a>*@ <!--原始的写法-->
+@*@Html.ActionLink("明细", "Details", new { id = item.Id });*@ <!--HtmlHelper的写法-->
+<!--_ViewImports 使用Tag Helper  在这个视图中 初始化视图，提供一堆指令 告诉razor引擎怎么渲染视图,视图有哪些功能-->
+@*<a asp-action="Details" asp-route-id="@item.Id">明细</a>*@
+@*</li>
             <hr />
-
         }
-    </ul>
-    @section bottom
+    </ul>*@
+
+@section bottom
     {
     <a asp-action="Create">添加</a>
-    }
-
+}
+<hr />
+@{ 
+//使用ViewComponents
+   // @await Component.InvokeAsync("Print", 123); //可以直接加到布局页
+}
+<vc:print obj="123"></vc:print> <!--使用TagsHelper调用ViewComponent-->

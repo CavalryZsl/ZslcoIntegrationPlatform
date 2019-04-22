@@ -1,0 +1,17 @@
+﻿@model MainInfoViewModel
+
+    <ul>
+        @foreach (var item in Model.students)
+        {
+
+            <li>
+                编号：@item.Id  姓名：@item.Name  年龄：@item.Age  性别：@item.gender
+                @*<a href="Details/@item.Id">明细</a>*@ <!--原始的写法-->
+                @*@Html.ActionLink("明细", "Details", new { id = item.Id });*@ <!--HtmlHelper的写法-->
+                <!--_ViewImports 使用Tag Helper  在这个视图中 初始化视图，提供一堆指令 告诉razor引擎怎么渲染视图,视图有哪些功能-->
+                <a asp-action="Details" asp-route-id="@item.Id">明细</a>
+            </li>
+            <hr />
+
+        }
+    </ul>

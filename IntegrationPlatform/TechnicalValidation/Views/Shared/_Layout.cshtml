@@ -4,8 +4,18 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    <environment include="Development"> <!--开发环境使用 本地的资源-->
+        <link href="~/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development"> <!--非开发环境使用 CDN的资源-->
+        <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    </environment>
+    
 </head>
 <body>
+    <nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1">NAV</span>
+    </nav>
     <div>
         @RenderBody()
     </div>
@@ -13,5 +23,18 @@
         <!--其他视图需要配置这个节点才可以渲染  false不强制  详见info视图-->
         @RenderSection("bottom", false);
     </div>
+    <!--前端JS自动验证 配合asp.net core EntityModel的特性验证和H5的自定义属性-->
+        <environment exclude="Development" >
+        <!--非开发环境使用CDN的资源-->
+        <script src="https://cdn.bootcss.com/jquery/3.4.0/jquery.js" asp-fallback-src="~/node_modules/jquery/dist/jquery.min.js" asp-fallback-test="Window.jQuery"></script> <!--如果CDN连接失败 则使用本地的 验证window。jquery对象证明链接成功与失败-->
+        <script src="https://cdn.bootcss.com/jquery-validate/1.19.0/jquery.validate.js"></script>
+        <script src="https://cdn.bootcss.com/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+        </environment>
+        <environment include="Development">
+            <!--开发环境使用 本地的资源-->
+            <script src="~/node_modules/jquery/dist/jquery.min.js"></script>
+            <script src="~/node_modules/jquery-validation/dist/jquery.validate.min.js"></script>
+            <script src="~/node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+        </environment>
 </body>
 </html>
